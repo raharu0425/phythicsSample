@@ -225,12 +225,13 @@ void HelloWorld::genWavePoints(cocos2d::Point container[], cocos2d::Point points
     {
         float average = abs(points[p_n].x - points[p_n+1].x);
         float curve_1_length = static_cast<float>(getRand(static_cast<int>(average*.3), static_cast<int>(average*.5)));
+        float average_h = abs(points[p_n].y-points[p_n+1].y);
         float height1 = static_cast<float>(getRand(800, 1500)/1000)*points[p_n].y;
         float height2 = static_cast<float>(getRand(800, 1500)/1000)*points[p_n+1].y;
         
         for (int t = 0; t < smoother_num; t++)
         {
-            return_points.push_back(bezier(points[p_n], points[p_n+1], points[p_n]+Point(curve_1_length/2, height1), points[p_n+1]-Point((average-curve_1_length)/1.5, height2), static_cast<float>(t)/smoother_num));
+            return_points.push_back(bezier(points[p_n], points[p_n+1], points[p_n]+Point(curve_1_length, height1), points[p_n+1]-Point(average-curve_1_length, height2), static_cast<float>(t)/smoother_num));
         }
         p_n++;
     }
@@ -331,7 +332,7 @@ b2Body* HelloWorld::generateWaves(const float maxLength, const float maxHeight)
         }
         else if (i == MAX_NUM-1)
         {
-            randPoints.push_back(Point(_last_point.x + maxLength-100.0f, the_rate2*maxHeight+400.0f));
+            randPoints.push_back(Point(_last_point.x + maxLength-60.0f, the_rate2*maxHeight+400.0f));
         }
         else
         {
@@ -341,7 +342,7 @@ b2Body* HelloWorld::generateWaves(const float maxLength, const float maxHeight)
         CCLOG("Point ======> (%f, %f)",randPoints.back().x, randPoints.back().y);
         current_length+=the_length;
     }
-    _last_point = Point(randPoints.back().x+100.0f, randPoints.back().y-400.0f);
+    _last_point = Point(randPoints.back().x+60.0f, randPoints.back().y-400.0f);
     
     Point the_points[MAX_NUM];
     //{Point(0.0f, 500.0f), Point(580.0f, 100.0f), Point(1136.0f, 50.0f),  Point(2136.0f, 200.0f),Point(3136.0f, 300.0f),Point(4136.0f, 500.0f),Point(5636.0f, 100.0f)};
