@@ -1,5 +1,5 @@
 #include "HelloWorldScene.h"
-
+#include "WaveMapGenerator.h"
 
 #define PI 3.1415926f
 #define PTM_RATIO 32
@@ -105,8 +105,55 @@ bool HelloWorld::init()
     groundBody->CreateFixture(&wave,0);
     */
     
+    /*
     _waves[0] = this->generateWaves(MAP_LENGTH, 300.0f);
     _waves[1] = this->generateWaves(MAP_LENGTH, 440.0f);
+    */
+    
+
+    
+    
+    b2Vec2 vectors[60];
+    
+    Size sizes[] = {Size(560.0f, 200.0f),Size(560.0f,100.0f), Size(560.0f, 120.0f),Size(260.0f, 120.0f)};
+    
+    std::vector<Point> points = WaveMapGenerator::getInstance()->genContinuousWaves(Point(-300.0f, 0.0f), sizes, sizeof(sizes)/sizeof(Size), 60);
+    std::vector<Point>::iterator it = points.begin();
+    
+    for (int i = 0;it != points.end(); ++it)
+    {
+        vectors[i].Set((*it).x/PTM_RATIO,(*it).y/PTM_RATIO);
+        CCLOG("Point%i => (%f, %f)", i , (*it).x, (*it).y);
+        i++;
+    }
+    
+    b2BodyDef ground_body_def;
+    ground_body_def.type = b2_staticBody;
+    //ground_body_def.position.Set(0, 0);
+    b2Body *groundBody = _world->CreateBody(&ground_body_def);
+    b2ChainShape wave;
+    wave.CreateChain(vectors, sizeof(vectors)/sizeof(b2Vec2));
+    groundBody->CreateFixture(&wave,0);
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     _player = Sprite::create("star.png");
@@ -269,7 +316,7 @@ void HelloWorld::update(float delta)
         }
     }
     
-    
+    /*
     if (_player->getPosition().x - passLength >= MAP_LENGTH*1.2) {
         b2Body* the_map;
         if (inMap1) {
@@ -290,7 +337,7 @@ void HelloWorld::update(float delta)
     
     CCLOG("Position:(%f, %f)", _player->getPosition().x, _player->getPosition().y);
     
-    
+    */
     
     
 }
